@@ -6,7 +6,8 @@ import {
   BarElement,
   Title,
   Tooltip,
-  Legend
+  Legend,
+  ChartOptions
 } from 'chart.js';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 
@@ -23,74 +24,102 @@ ChartJS.register(
 
 const RegulatedExchangeBarChart = () => {
   const data = {
-    labels: ['受監管交易所更安全', '未明確偏好或偏好無監管'],
+    labels: ['受監管平台', '非受監管平台'],
     datasets: [
       {
-        axis: 'y',
-        label: '百分比',
-        data: [20, 80],
+        label: '使用意願',
+        data: [20, 0],
         backgroundColor: [
-          'rgba(54, 162, 235, 0.7)', // Blue for regulated
-          'rgba(201, 203, 207, 0.7)', // Gray for others
+          'rgba(142, 202, 206, 0.8)',
+          'rgba(224, 224, 224, 0.8)',
         ],
         borderColor: [
-          'rgba(54, 162, 235, 1)',
-          'rgba(201, 203, 207, 1)',
+          'rgba(142, 202, 206, 1)',
+          'rgba(224, 224, 224, 1)',
         ],
         borderWidth: 1,
+        barPercentage: 0.4,
+        categoryPercentage: 0.8,
       },
     ],
   };
 
-  const options = {
-    indexAxis: 'y' as const,
+  const options: ChartOptions<'bar'> = {
     responsive: true,
+    maintainAspectRatio: false,
     plugins: {
       legend: {
         display: false,
       },
       tooltip: {
-        callbacks: {
-          label: function(context: any) {
-            return `${context.parsed.x}%`;
-          }
-        }
+        enabled: false
       },
       datalabels: {
-        align: 'end' as const,
-        anchor: 'end' as const,
-        color: (context: any) => {
-          const value = context.dataset.data[context.dataIndex];
-          return value === 20 ? 'rgba(54, 162, 235, 1)' : '#666';
-        },
+        anchor: 'end',
+        align: 'top',
+        color: 'rgba(142, 202, 206, 1)',
         font: {
-          weight: 'bold' as const,
+          weight: 'bold',
           size: 14
         },
-        formatter: (value: number) => `${value}%`
+        formatter: (value) => `+${value}%`,
+        offset: 8
       }
     },
     scales: {
-      x: {
-        beginAtZero: true,
-        max: 100,
+      y: {
+        min: 0,
+        max: 25,
+        grid: {
+          color: 'rgba(0, 0, 0, 0.1)',
+          display: true,
+          drawTicks: false,
+        },
         ticks: {
-          callback: function(value: any) {
-            return value + '%';
+          stepSize: 5,
+          padding: 10,
+          callback: (value) => `${value}%`,
+          font: {
+            size: 12
           }
         },
-        title: {
-          display: true,
-          text: '百分比'
+        border: {
+          display: false
         }
+      },
+      x: {
+        grid: {
+          display: false
+        },
+        border: {
+          display: false
+        },
+        ticks: {
+          padding: 5,
+          font: {
+            size: 14
+          }
+        }
+      }
+    },
+    layout: {
+      padding: {
+        top: 15,
+        left: 10,
+        right: 10,
+        bottom: 0
       }
     }
   };
 
   return (
     <div>
-      <h2 className="chart-title">監管對香港居民存款信心的影響</h2>
-      <Bar data={data} options={options} />
+      <h2 className="chart-title">受監管平台較非受監管平台更受歡迎</h2>
+      <div className="chart-container">
+        <div className="chart-wrapper">
+          <Bar data={data} options={options} />
+        </div>
+      </div>
     </div>
   );
 };
