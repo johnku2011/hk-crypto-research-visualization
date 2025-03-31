@@ -1,35 +1,39 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import React from 'react';
+import CryptoInterestPieChart from './components/CryptoInterestPieChart';
+import BitcoinNFTBarChart from './components/BitcoinNFTBarChart';
+import CryptoUncertaintyDonutChart from './components/CryptoUncertaintyDonutChart';
+import RegulatedExchangeBarChart from './components/RegulatedExchangeBarChart';
+import TokenizedCurrencyBarChart from './components/TokenizedCurrencyBarChart';
+import './App.css';
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+    <div className="container">
+      <h1 className="main-title">香港加密貨幣研究數據可視化</h1>
+      
+      <div className="charts-grid">
+        <div className="chart-card">
+          <CryptoInterestPieChart />
+        </div>
+        
+        <div className="chart-card">
+          <BitcoinNFTBarChart />
+        </div>
+        
+        <div className="chart-card">
+          <CryptoUncertaintyDonutChart />
+        </div>
+        
+        <div className="chart-card">
+          <RegulatedExchangeBarChart />
+        </div>
+        
+        <div className="chart-card wide-card">
+          <TokenizedCurrencyBarChart />
+        </div>
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    </div>
+  );
 }
 
-export default App
+export default App; 
