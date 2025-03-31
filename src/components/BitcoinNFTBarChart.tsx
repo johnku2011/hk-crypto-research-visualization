@@ -1,12 +1,14 @@
 import { Bar } from 'react-chartjs-2';
-import { 
-  Chart as ChartJS, 
-  CategoryScale, 
-  LinearScale, 
-  BarElement, 
-  Title, 
-  Tooltip, 
-  Legend 
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend,
+  ChartOptions,
+  GridLineOptions
 } from 'chart.js';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 
@@ -43,7 +45,7 @@ const BitcoinNFTBarChart = () => {
     ],
   };
 
-  const options = {
+  const options: ChartOptions<'bar'> = {
     responsive: true,
     maintainAspectRatio: false,
     plugins: {
@@ -54,27 +56,21 @@ const BitcoinNFTBarChart = () => {
         enabled: false
       },
       datalabels: {
-        anchor: 'end' as const,
-        align: function(context: any) {
-          const value = context.dataset.data[context.dataIndex];
+        anchor: 'end',
+        align(context) {
+          const value = context.dataset.data[context.dataIndex] as number;
           return value > 0 ? 'top' : 'bottom';
         },
-        color: function(context: any) {
-          const value = context.dataset.data[context.dataIndex];
+        color(context) {
+          const value = context.dataset.data[context.dataIndex] as number;
           return value > 0 ? 'rgba(142, 202, 206, 1)' : 'rgba(255, 182, 193, 1)';
         },
         font: {
-          weight: 'bold' as const,
-          size: function(context: any) {
-            const width = context.chart.width;
-            return width < 400 ? 11 : width < 600 ? 12 : 14;
-          }
+          weight: 'bold',
+          size: 14
         },
         formatter: (value: number) => (value > 0 ? `+${value}%` : `${value}%`),
-        offset: function(context: any) {
-          const width = context.chart.width;
-          return width < 400 ? 2 : width < 600 ? 4 : 8;
-        }
+        offset: 8
       }
     },
     scales: {
@@ -83,23 +79,15 @@ const BitcoinNFTBarChart = () => {
         max: 8,
         grid: {
           color: 'rgba(0, 0, 0, 0.1)',
-          drawBorder: false,
+          display: true,
           drawTicks: false,
         },
         ticks: {
           stepSize: 2,
-          padding: function(context: any) {
-            const width = context.chart.width;
-            return width < 400 ? 4 : width < 600 ? 6 : 10;
-          },
-          callback: function(value: any) {
-            return value + '%';
-          },
+          padding: 10,
+          callback: (value) => `${value}%`,
           font: {
-            size: function(context: any) {
-              const width = context.chart.width;
-              return width < 400 ? 9 : width < 600 ? 10 : 12;
-            }
+            size: 12
           }
         },
         border: {
@@ -114,28 +102,19 @@ const BitcoinNFTBarChart = () => {
           display: false
         },
         ticks: {
-          padding: function(context: any) {
-            const width = context.chart.width;
-            return width < 400 ? 2 : width < 600 ? 4 : 5;
-          },
+          padding: 5,
           font: {
-            size: function(context: any) {
-              const width = context.chart.width;
-              return width < 400 ? 11 : width < 600 ? 12 : 14;
-            }
+            size: 14
           }
         }
       }
     },
     layout: {
-      padding: function(context: any) {
-        const width = context.chart.width;
-        return {
-          top: width < 400 ? 8 : width < 600 ? 10 : 15,
-          left: width < 400 ? 2 : width < 600 ? 4 : 10,
-          right: width < 400 ? 2 : width < 600 ? 4 : 10,
-          bottom: 0
-        };
+      padding: {
+        top: 15,
+        left: 10,
+        right: 10,
+        bottom: 0
       }
     }
   };
